@@ -27,11 +27,11 @@ def inserir_usuario(nome, idade, email):
     conn.commit()
     conn.close()
     
-def listar_usuários():
+def listar_usuarios():
     """Retorna uma lista de todos os usuários na tabela."""
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.ececute('''
+    cursor.execute('''
                    SELECT * FROM usuarios
                    ''') # Seleciona todos os usuários da tabela
     usuarios = cursor.fetchall() # Obtém todos os resultados da consulta
