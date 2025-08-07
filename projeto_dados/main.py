@@ -8,7 +8,8 @@ def menu(): # Cria um menu interativo para o usuário
     
 def main(): #Cria a função principal do programa
     criar_tabela() # Chama a função para criar a tabela de usuários
-    while True: # Inicia um loop infinito par o menu
+    while True: # Inicia um loop infinito par o menu(A verificação do while sempre será verdadeira,
+        # pois nunca definimos uma condição de parada, apenas escrevemos True.)
         menu()
         escolha = int(input('Escolha uma opção: '))
         if escolha == 1:
