@@ -21,6 +21,7 @@ def criar_tabela():
     
     conn.commit() # Salva as alterações no banco de dados
     conn.close() # Fecha a conexão com o banco de dados
+    return True
     
 def inserir_usuario(nome, idade, email):
     """Insere um novo usuário na tabela.""" # As aspas triplas são usadas para criar uma string de várias linhas
@@ -39,6 +40,7 @@ def inserir_usuario(nome, idade, email):
                    ''', (nome, idade, email)) # Insere um novo usuário com os valores fornecidos
     conn.commit()
     conn.close()
+    return True
     
 def listar_usuarios():
     """Retorna uma lista de todos os usuários na tabela."""
@@ -55,3 +57,53 @@ def listar_usuarios():
     usuarios = cursor.fetchall() # Obtém todos os resultados da consulta
     conn.close() # Fecha a conexão com o banco de dados
     return usuarios # Retorna a lista de usuários
+
+def atualizar_usuario(id, nome, idade, email):
+    """Atualiza os dados de um usuário existente na tabela."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    conn.execute('''
+                   UPDATE usuarios
+                     SET nome = ?, idade = ?, email = ?
+                     WHERE id = ?
+                     ''', (nome, idade, email, id)) # Atualiza os dados do usuário com o ID fornecido
+    # O UPDATE é usado para atualizar dados no banco de dados
+    # O SET indica quais colunas queremos atualizar e com quais valores
+    # O WHERE é usado para especificar qual registro queremos atualizar
+    
+    conn.commit() # Salva as alterações no banco de dados
+    conn.close() # Fecha a conexão com o banco de dados
+    return True # Retorna True para indicar que a atualização foi bem-sucedida
+    # Retornar True é uma boa prática para indicar que a operação foi bem-sucedida
+    # Isso pode ser útil para verificar se a operação foi bem-sucedida em outras partes
+    # do código, como em testes ou em outras funções que chamam esta função
+    
+def deletar_usuario(id):
+    """Deleta um usuário da tabela pelo ID."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+                   DELETE FROM usuarios
+                   WHERE id = ?
+                   ''', (id,)) # Deleta o usuário com o ID fornecido
+    # Sintaxe: DELETE FROM tabela WHERE condição
+    # É como se fosse uma pergunta: Deletar da tabela `tabela`. Onde? `condição(resposta)` 
+    # A vírgula após (id,) é necessária para passar uma tupla com um único elemento
+    # Isso é necessário porque o método execute espera uma tupla como segundo argumento
+    
+    conn.commit()
+    conn.close()
+    return True
+
+def usuario_existe(id):
+    """Verifica se existe um usuário com o ID fornecido."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT 1 FROM usuarios WHERE id = ?', (id,)) # Aqui não usamos aspas triplas porque a query é curta
+    # O SELECT 1 é uma prática comum para verificar a existência de um registro
+    # Ele retorna 1 se o registro existir, o que é suficiente para nossa verificação
+    
+    resultado = cursor.fetchone() # Obtém o primeiro resultado da consulta
+     # O fetchone retorna uma tupla com os dados do registro ou None se não houver resultados
+    conn.close()
+    return resultado is not None # Retorna True se o usuário existir, caso contrário False
