@@ -1,1 +1,5 @@
+# Esse arquivo contém as dependências do projeto
+# Use o comando `pip install -r requirements.txt` para instalar as dependências
+# Certifique-se de que o Python e o pip estão instalados corretamente
+
 sqlite3
